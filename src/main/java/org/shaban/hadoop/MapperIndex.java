@@ -10,14 +10,14 @@ import java.util.StringTokenizer;
 
 public class MapperIndex extends Mapper<LongWritable, Text, Text, Text> {
     private final Text keyInfo = new Text();
-    private final Text valueInfo = new Text("1");
+    private final Text valueInfo = new Text();
 
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         FileSplit split = (FileSplit) context.getInputSplit();
         StringTokenizer tokenizer = new StringTokenizer(value.toString());
 
-        String word1 = context.getConfiguration().get("query.word1");
-        String word2 = context.getConfiguration().get("query.word2");
+        String word1 = context.getConfiguration().get(Constant.QUERY_WORD_1);
+        String word2 = context.getConfiguration().get(Constant.QUERY_WORD_2);
 
         while (tokenizer.hasMoreTokens()) {
             String word = tokenizer.nextToken();

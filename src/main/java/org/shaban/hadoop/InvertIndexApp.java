@@ -25,8 +25,8 @@ public class InvertIndexApp {
         String word2 = args[3];
 
         Configuration configuration = new Configuration();
-        configuration.set("query.word1", word1);
-        configuration.set("query.word2", word2);
+        configuration.set(Constant.QUERY_WORD_1, word1);
+        configuration.set(Constant.QUERY_WORD_2, word2);
 
         FileSystem fileSystem = FileSystem.get(configuration);
 

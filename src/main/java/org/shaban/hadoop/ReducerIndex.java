@@ -10,18 +10,15 @@ public class ReducerIndex extends Reducer<Text, Text, Text, Text> {
 
     @Override
     protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-        StringBuilder fileList = new StringBuilder();
-
+        StringBuilder documentsOfWord = new StringBuilder();
         for (Text value : values) {
-            fileList.append(value.toString()).append(", ");
+            documentsOfWord.append(value.toString()).append(",");
         }
 
-        // Remove the trailing comma
-        String resultString = fileList.toString().replaceAll(",$", "");
+        String result = documentsOfWord.toString().replaceAll(",$", "");
 
-        // Output the result in the desired format
-        result.set(resultString);
-        context.write(key, result);
+        this.result.set(result);
+        context.write(key, this.result);
     }
 }
 
