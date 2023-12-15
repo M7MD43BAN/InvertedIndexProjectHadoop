@@ -1,5 +1,0 @@
-mapreduce hdfs
-hadoop bigdata mapreduce
-hdfs hadoop
-hdfs mapreduce
-bigdata hadoop

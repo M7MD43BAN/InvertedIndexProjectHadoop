@@ -10,16 +10,11 @@ public class CombinerIndex extends Reducer<Text, Text, Text, Text> {
 
     @Override
     protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-        int sum = 0;
-
-        for (Text value : values) {
-            sum += Integer.parseInt(value.toString());
-        }
-
         int splitIndex = key.toString().indexOf("@");
 
-        fileAtWordFreqValue.set(key.toString().substring(splitIndex + 1) + ":" + sum);
+        fileAtWordFreqValue.set(key.toString().substring(splitIndex + 1));
         key.set(key.toString().substring(0, splitIndex));
         context.write(key, fileAtWordFreqValue);
     }
 }
+
