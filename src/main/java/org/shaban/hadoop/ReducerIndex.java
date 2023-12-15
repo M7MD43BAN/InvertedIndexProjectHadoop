@@ -5,11 +5,6 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Reducer;
-
-import java.io.IOException;
-
 public class ReducerIndex extends Reducer<Text, Text, Text, Text> {
     private final Text result = new Text();
 
