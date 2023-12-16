@@ -15,10 +15,10 @@ public class ReducerIndex extends Reducer<Text, Text, Text, Text> {
             documentsOfWord.append(value.toString()).append(",");
         }
 
-        String result = documentsOfWord.toString().replaceAll(",$", "");
+        String finalResult = documentsOfWord.toString().replaceAll(",$", "");
 
-        this.result.set(result);
-        context.write(key, this.result);
+        result.set(finalResult);
+        context.write(key, result);
     }
 }
 
