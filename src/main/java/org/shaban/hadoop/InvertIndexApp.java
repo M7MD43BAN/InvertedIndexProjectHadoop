@@ -14,7 +14,7 @@ import java.io.IOException;
 public class InvertIndexApp {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
 
-        if (args.length < 4) {
+        if (args.length != 4) {
             System.err.println("Usage: InvertIndexApp <input path> <output path> <word1> <word2>");
             System.exit(-1);
         }
