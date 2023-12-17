@@ -1,2 +1,4 @@
-hello	Document3,Document2.
-java	Document2,Document1.
+example appears in: 	Document2	
+random appears in: 	Document3,Document2,Document1	
+example AND random result is: 	Document2	
+example OR random result is: 	Document3,Document2,Document1	
