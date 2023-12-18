@@ -1,3 +1,3 @@
-hello appears in: 	Document3,Document2	
-No results for AND operation	
-	
+java appears in: 	Document2,Document1	
+java AND x result is: 	 There is no intersection between the two words 	
+java OR x result is: 	Document2, Document1	

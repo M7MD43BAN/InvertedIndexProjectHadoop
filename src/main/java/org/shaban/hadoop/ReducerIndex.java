@@ -45,18 +45,27 @@ public class ReducerIndex extends Reducer<Text, Text, Text, Text> {
 
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
-        String andResult = WordOperation.performAND(firstWord, secondWord, documentsOfFirstWord, documentsOfSecondWord);
+        String word1 = context.getConfiguration().get(Constant.QUERY_WORD_1);
+        String word2 = context.getConfiguration().get(Constant.QUERY_WORD_2);
+
+        String andResult;
+        String orResult;
 
         if (documentsOfSecondWord.isEmpty() || documentsOfFirstWord.isEmpty()) {
-            andResult = "";
+            andResult = word1 + " AND " + word2 + " result is: \t" + " There is no intersection between the two words ";
+        } else {
+            andResult = WordOperation.performAND(firstWord, secondWord, documentsOfFirstWord, documentsOfSecondWord);
         }
         context.write(new Text(andResult), result);
-
-        String orResult = WordOperation.performOR(firstWord, secondWord, documentsOfFirstWord, documentsOfSecondWord);
         if (documentsOfSecondWord.isEmpty() && documentsOfFirstWord.isEmpty()) {
-            orResult = "";
+            orResult = word1 + " OR " + word2 + " result is: \t" + "the two words not appears ";
+        } else if (documentsOfSecondWord.isEmpty()) {
+            orResult = word1 + " OR " + word2 + " result is: \t" + String.join(", ", documentsOfFirstWord);
+        } else if (documentsOfFirstWord.isEmpty()) {
+            orResult = word1 + " OR " + word2 + " result is: \t" + String.join(", ", documentsOfSecondWord);
+        } else {
+            orResult = WordOperation.performOR(firstWord, secondWord, documentsOfFirstWord, documentsOfSecondWord);
         }
         context.write(new Text(orResult), result);
     }
 }
-
