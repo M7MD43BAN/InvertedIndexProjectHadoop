@@ -33,7 +33,8 @@ public class ReducerIndex extends Reducer<Text, Text, Text, Text> {
                 firstDoc.add(value.toString());
             }
 
-            String wordWithDocs = key.toString() + " appears in: \t" + String.join(",", documentsOfFirstWord);
+            String wordWithDocs = key.toString() + " appears in: \t";
+            result.set(String.join(",", documentsOfFirstWord));
             context.write(new Text(wordWithDocs), result);
 
             firstIteration = false;
@@ -44,7 +45,8 @@ public class ReducerIndex extends Reducer<Text, Text, Text, Text> {
                 secondDoc.add(value.toString());
             }
 
-            String wordWithDocs = key.toString() + " appears in: \t" + String.join(",", documentsOfSecondWord);
+            String wordWithDocs = key.toString() + " appears in: \t";
+            result.set(String.join(",", documentsOfSecondWord));
             context.write(new Text(wordWithDocs), result);
 
             secondIteration = false;
@@ -62,34 +64,42 @@ public class ReducerIndex extends Reducer<Text, Text, Text, Text> {
 
         //words appears
         if (!word1.equals(firstWord) && !word1.equals(secondWord)) {
-            String word1Appears = word1 + " result is: \t" + " this word not appears in files \t";
+            String word1Appears = word1 + " result is: \t";
+            result.set("this word not appears in files \t");
+
             context.write(new Text(word1Appears), result);
         }
         if (!word2.equals(firstWord) && !word2.equals(secondWord)) {
-            String word2Appears = word2 + " result is: \t" + " this word not appears in files \t";
+            String word2Appears = word2 + " result is: \t";
+            result.set("this word not appears in files \t");
+
             context.write(new Text(word2Appears), result);
         }
 
         //and operation
         if (documentsOfSecondWord.isEmpty() || documentsOfFirstWord.isEmpty()) {
-            andResult = word1 + " AND " + word2 + " result is: \t" + " There is no intersection between the two words ";
+            andResult = word1 + " AND " + word2 + " result is: \t";
+            result.set("There is no intersection between the two words");
         } else {
-            andResult = WordOperation.performAND(firstWord, secondWord, documentsOfFirstWord, documentsOfSecondWord);
-            //System.out.println(andResult.length());
-            if (andResult.length() == 26) {
-                andResult = word1 + " AND " + word2 + " result is: \t" + " There is no intersection between the two words ";
-
+            result.set(WordOperation.performAND(documentsOfFirstWord, documentsOfSecondWord));
+            andResult = firstWord + " AND " + secondWord + " result is: \t";
+            if (documentsOfFirstWord.isEmpty()) {
+                andResult = word1 + " AND " + word2 + " result is: \t";
+                result.set("There is no intersection between the two words");
             }
         }
         context.write(new Text(andResult), result);
-        //OR operation
-        if (secondDoc.isEmpty() && firstDoc.isEmpty()) {
-            orResult = word1 + " OR " + word2 + " result is: \t" + "the two words not appears ";
-        } else if (secondDoc.isEmpty()) {
-            orResult = word1 + " OR " + word2 + " result is: \t" + String.join(", ", firstDoc);
 
+        //OR operation
+        if (firstDoc.isEmpty()) {
+            orResult = word1 + " OR " + word2 + " result is: \t";
+            result.set("the two words not appears");
+        } else if (secondDoc.isEmpty()) {
+            orResult = word1 + " OR " + word2 + " result is: \t";
+            result.set(String.join(", ", firstDoc));
         } else {
-            orResult = WordOperation.performOR(firstWord, secondWord, firstDoc, secondDoc);
+            result.set(WordOperation.performOR(firstDoc, secondDoc));
+            orResult = word1 + " OR " + word2 + " result is: \t";
         }
         context.write(new Text(orResult), result);
     }
